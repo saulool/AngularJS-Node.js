@@ -1,0 +1,18 @@
+<div ng-controller="InformacoesController as informacoesCtrl">
+	<table class="table table-striped">
+		<thead>
+			<tr>	
+				<th>Placa</th>
+				<th>Consumo em litros/km</th>
+				<th>Custo/km</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="automovel in informacoesCtrl.automoveis">
+				<td>{{automovel.placa}}</td>
+				<td>11</td>
+				<td>11</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

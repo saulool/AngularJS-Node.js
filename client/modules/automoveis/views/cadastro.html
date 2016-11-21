@@ -1,0 +1,29 @@
+<div ng-controller="CadastroAutomovelController as cadastroAutomovelCtrl">
+	<form name="cadastroAutomovelCtrl.formAutomovel" novalidate>
+	  <div class="form-group">
+	    <label>Placa</label>
+	    <input type="text" class="form-control" name="placa" ng-bind="cadastroAutomovelCtrl.placa" ng-required placeholder="XXX-0000">
+	  </div>
+	  <div class="form-group">
+	    <label>Modelo</label>
+	    <input type="text" class="form-control" ng-bind="cadastroAutomovelCtrl.modelo" ng-required placeholder="CIVIC LXR 2.0">
+	  </div>
+	  <div class="form-group">
+	    <label>Ano</label>
+	    <input type="text" class="form-control" ng-bind="cadastroAutomovelCtrl.ano" ng-required placeholder="0000">
+	  </div>
+	  <div class="form-group">
+	    <label>Fabricante</label>
+	    <input type="text" class="form-control" ng-bind="cadastroAutomovelCtrl.fabricante" ng-required placeholder="HONDA">
+	  </div>
+	  <div class="form-group">
+	    <label>Capacidade do Tanque de Combustível</label>
+	    <input type="text" class="form-control" ng-bind="cadastroAutomovelCtrl.capacidade" ng-required placeholder="00">
+	  </div>
+	  <div class="form-group">
+	    <label>Valor atual do odômetro</label>
+	    <input type="text" class="form-control" ng-bind="cadastroAutomovelCtrl.odometro" ng-required placeholder="0000">
+	  </div>
+	  <button type="submit" class="btn btn-primary" ng-click="cadastroAutomovelCtrl.salvarAutomovel()">Salvar</button>
+	</form>
+</div>

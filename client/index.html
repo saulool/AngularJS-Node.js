@@ -6,7 +6,10 @@
 		<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 		<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
-		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+		<script type="text/javascript" src="modules/automoveis/config/module.js"></script>
+		<script type="text/javascript" src="modules/automoveis/controller/InformacoesController.js"></script>
+		<script type="text/javascript" src="modules/automoveis/controller/CadastroAutomovelController.js"></script>
 
 	</head>
 	<body ng-app="app">
@@ -23,8 +26,14 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li><a ui-sref="dashboard" ui-sref-active="active">Dashboard</a></li>
-	            <li><a ui-sref="automoveis" ui-sref-active="active">Automóveis</a></li>
+
+				<li class="dropdown">
+		          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Automóveis <span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a ui-sref="automoveisInformacoes" ui-sref-active="active">Informações</a></li>
+		            <li><a ui-sref="automoveisCadastro" ui-sref-active="active">Cadastro</a></li>
+		          </ul>
+		        </li>
 	            <li><a ui-sref="abastecimentos" ui-sref-active="active">Abastecimentos</a></li>
 	            <li><a ui-sref="relatorios" ui-sref-active="active">Relatórios</a></li>
 	          </ul>
@@ -33,7 +42,8 @@
 	    </nav>
 
 
-
-		<ui-view></ui-view>
+		<div class="container">
+			<ui-view></ui-view>
+		</div>
 	</body>
 </html>
