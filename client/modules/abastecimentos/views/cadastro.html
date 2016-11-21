@@ -1,0 +1,49 @@
+<div ng-controller="CadastroAbastecimentoController as cadastroAbastecimentoCtrl">
+	<form name="cadastroAbastecimentoCtrl.form" ng-submit="cadastroAbastecimentoCtrl.salvarAbastecimento()" novalidate>
+	  <div class="form-group">
+	    <label>Automóvel</label>
+
+		<select class="form-control" ng-model="cadastroAbastecimentoCtrl.automovel" ng-options="(automovel.placa + ' - ' + automovel.modelo) for automovel in cadastroAbastecimentoCtrl.automoveis track by automovel.id" ng-init="cadastroAbastecimentoCtrl.automovel = cadastroAbastecimentoCtrl.automoveis[0]">
+				<option value="0" ng-if="cadastroAbastecimentoCtrl.automoveis.length == 0" selected>Selecione</option>
+			</select>
+	  </div>
+
+	  <div class="form-group">
+	    <label>Tipo de Combustível</label>
+
+		<select class="form-control" name="tipoCombustivel" ng-model="cadastroAbastecimentoCtrl.tipoCombustivel">
+			<option value="gasolina" selected>GASOLINA</option>
+			<option value="etanol">ETANOL</option>
+			<option value="diesel">DIESEL</option>
+		</select>
+	  </div>
+	  <div class="form-group">
+	    <label>Data</label>
+	    <input type="text" class="form-control" name="data" ng-model="cadastroAbastecimentoCtrl.data" required="required" placeholder="01/01/2011">
+	  </div>
+	  <div class="form-group">
+	    <label>Valor Odômetro</label>
+	    <input type="text" class="form-control" name="valorOdometro" ng-model="cadastroAbastecimentoCtrl.valorOdometro" required="required" placeholder="21903">
+	  </div>
+	  <div class="form-group">
+	    <label>Quantidade de Litros</label>
+	    <input type="text" class="form-control" name="qtdLitros" ng-model="cadastroAbastecimentoCtrl.qtdLitros" required="required" placeholder="53.50">
+	  </div>
+	  <div class="form-group">
+	    <label>Custo Total</label>
+	    <input type="text" class="form-control" name="custoTotal" ng-model="cadastroAbastecimentoCtrl.custoTotal" required="required" placeholder="49.30">
+	  </div>
+	  <div class="form-group">
+	    <label>Preço por Litro</label>
+	    <input type="text" class="form-control" name="precoLitro" ng-model="cadastroAbastecimentoCtrl.precoLitro" required="required" placeholder="3.58">
+	  </div>
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox" name="novaSerie" ng-model="cadastroAbastecimentoCtrl.novaSerie"> Nova Série
+	    </label>
+	  </div>
+	  <button type="submit" class="btn btn-primary" ng-disabled="cadastroAbastecimentoCtrl.salvando">Salvar</button>
+	  <span ng-if="cadastroAbastecimentoCtrl.salvo">Abastecimento cadastrado com sucesso</span>
+	  <span ng-if="cadastroAbastecimentoCtrl.erroForm">Existem problemas no formulário</span>
+	</form>
+</div>

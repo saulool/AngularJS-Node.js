@@ -5,11 +5,18 @@
 		<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 		<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+		<script type="text/javascript" src="bower_components/moment/min/moment-with-locales.min.js"></script>
+		<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
 
 		<script type="text/javascript" src="app.js"></script>
 		<script type="text/javascript" src="modules/automoveis/config/module.js"></script>
 		<script type="text/javascript" src="modules/automoveis/controller/InformacoesController.js"></script>
 		<script type="text/javascript" src="modules/automoveis/controller/CadastroAutomovelController.js"></script>
+		<script type="text/javascript" src="modules/abastecimentos/config/module.js"></script>
+		<script type="text/javascript" src="modules/abastecimentos/controller/CadastroAbastecimentosController.js"></script>
+
+		<script type="text/javascript" src="modules/relatorios/config/module.js"></script>
+		<script type="text/javascript" src="modules/relatorios/controller/RelatorioAbastecimentosController.js"></script>
 
 	</head>
 	<body ng-app="app">
@@ -34,8 +41,21 @@
 		            <li><a ui-sref="automoveisCadastro" ui-sref-active="active">Cadastro</a></li>
 		          </ul>
 		        </li>
-	            <li><a ui-sref="abastecimentos" ui-sref-active="active">Abastecimentos</a></li>
-	            <li><a ui-sref="relatorios" ui-sref-active="active">Relatórios</a></li>
+
+				<li class="dropdown">
+		          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Abastecimentos <span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a ui-sref="abastecimentosCadastro" ui-sref-active="active">Cadastro</a></li>
+		          </ul>
+		        </li>
+	            
+	            <li class="dropdown">
+		          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Relatórios <span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a ui-sref="relatoriosAbastecimentos" ui-sref-active="active">Abastecimentos</a></li>
+		            <li><a ui-sref="relatoriosConsumo" ui-sref-active="active">Consumo</a></li>
+		          </ul>
+		        </li>
 	          </ul>
 	        </div><!--/.nav-collapse -->
 	      </div>
