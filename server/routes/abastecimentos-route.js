@@ -8,7 +8,7 @@ module.exports = function(app){
 
     var novaSerie = 0;
 
-    if(req.query.novaSerie){
+    if(req.query.novaSerie != "false"){
       novaSerie = 1;
     }
 
@@ -25,6 +25,20 @@ module.exports = function(app){
   app.get('/api/abastecimentos', function (req, res) {
 
     var query = 'SELECT * FROM abastecimentos ab JOIN automoveis at on ab.id_automovel = at.id;';
+    console.log(query);
+
+    connection.query(query, function(err, rows, fields) {
+      if (err) throw err;
+
+      console.log(rows);
+
+      res.send(JSON.stringify(rows));
+    });
+  });
+
+  app.get('/api/abastecimentos/ultimos', function (req, res) {
+
+    var query = 'SELECT at.id, at.placa, ab.data, ab.valor_odometro, ab.quantidade_litros, ab.custo_total, ab.preco_litro, ab.nova_serie FROM abastecimentos ab JOIN automoveis at on ab.id_automovel = at.id where ab.data between date_add(now(), INTERVAL -600 MONTH) and date(Now()) ORDER BY at.id, ab.data;';
     console.log(query);
 
     connection.query(query, function(err, rows, fields) {

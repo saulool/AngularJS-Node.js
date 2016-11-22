@@ -9,11 +9,10 @@ function InformacoesController($http){
 
 	informacoesVm.automoveis = [];
 
-	$http(
-        {
-            method: 'GET',
-            url: 'http://localhost:3000/api/automoveis'
-        }).then(function(response){
-        	informacoesVm.automoveis = response.data;
-        });
+	$http({
+        method: 'GET',
+        url: 'http://localhost:3000/api/abastecimentos/ultimos'
+    }).then(function(response){
+    	informacoesVm.automoveis = response.data;
+    });
 }

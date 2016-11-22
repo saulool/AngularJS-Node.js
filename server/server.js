@@ -6,7 +6,7 @@ global.connection = mysql.createConnection({
   user     : 'root',
   password : '',
   database : 'gestor_automoveis',
-  port: 8889
+  port: 3306
 });
 
 connection.connect();

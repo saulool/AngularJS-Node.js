@@ -2,15 +2,15 @@
 	<form>
 	  <div class="form-group">
 	    <label>Placa</label>
-		<input type="text" ng-model="relatorioAbastecimentosCtrl.filtro.placa" />
+		<input type="text" class="form-control" ng-model="relatorioAbastecimentosCtrl.filtro.placa" />
 	  </div>
 	  <div class="form-group">
 	    <label>Data início</label>
-		<input type="text" ng-model="relatorioAbastecimentosCtrl.filtro.dataInicio" />
+		<input type="text" class="form-control" ng-model="relatorioAbastecimentosCtrl.dataInicio" />
 	  </div>
 	  <div class="form-group">
 	    <label>Data fim</label>
-		<input type="text" ng-model="relatorioAbastecimentosCtrl.filtro.dataFim" />
+		<input type="text" class="form-control" ng-model="relatorioAbastecimentosCtrl.dataFim" />
 	  </div>
 	 </form>
 
@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="abastecimento in relatorioAbastecimentosCtrl.abastecimentos | dateRange: relatorioAbastecimentosCtrl.filtro.dataInicio : relatorioAbastecimentosCtrl.filtro.dataFim">
+			<tr ng-repeat="abastecimento in relatorioAbastecimentosCtrl.abastecimentos | dateRange: relatorioAbastecimentosCtrl.dataInicio : relatorioAbastecimentosCtrl.dataFim | filter: relatorioAbastecimentosCtrl.filtro:strict">
 				<td>{{abastecimento.placa}} - {{abastecimento.modelo}}</td>
 				<td>{{abastecimento.data}}</td>
 				<td>{{abastecimento.tipoCombustivel}}</td>
