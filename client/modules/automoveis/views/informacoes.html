@@ -1,3 +1,5 @@
+<h1>Resumo das Informações dos Automóveis</h1>
+
 <div ng-controller="InformacoesController as informacoesCtrl">
 	<table class="table table-striped">
 		<thead>
@@ -8,10 +10,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="automovel in informacoesCtrl.automoveis">
-				<td>{{automovel.placa}}</td>
-				<td>11</td>
-				<td>11</td>
+			<tr ng-repeat="automovel in informacoesCtrl.totaisPorPlaca">
+				<td>{{ automovel.placa }}</td>
+				<td>{{ automovel.litrosPorKm > 0 ? automovel.litrosPorKm.toFixed(3) : '-' }}</td>
+				<td>{{ automovel.custoPorKm > 0 ? automovel.custoPorKm.toFixed(3) : '-' }}</td>
 			</tr>
 		</tbody>
 	</table>

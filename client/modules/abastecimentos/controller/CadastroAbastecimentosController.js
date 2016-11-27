@@ -14,7 +14,6 @@ function CadastroAbastecimentoController($http){
 	cadastroVm.data = null;
 	cadastroVm.valorOdometro = null;
 	cadastroVm.qtdLitros = null;
-	cadastroVm.custoTotal = null;
 	cadastroVm.precoLitro = null;
 	cadastroVm.novaSerie = false;
 	cadastroVm.salvando = false;
@@ -26,21 +25,27 @@ function CadastroAbastecimentoController($http){
 
 	function salvarAbastecimento(){
 		if(cadastroVm.form.$valid){
-			cadastroVm.erroForm = false;
-			cadastroVm.salvo = false;
-			cadastroVm.salvando = true;
-			$http({
-	            method: 'POST',
-	            url: 'http://localhost:3000/api/abastecimentos/cadastro',
-	            params: { automovel: cadastroVm.automovel.id, tipoCombustivel: cadastroVm.tipoCombustivel, data: moment(cadastroVm.data, "DD/MM/YYYY").format("YYYY-MM-DD"), valorOdometro: cadastroVm.valorOdometro, qtdLitros: cadastroVm.qtdLitros, custoTotal: cadastroVm.custoTotal, precoLitro: cadastroVm.precoLitro, novaSerie: cadastroVm.novaSerie }
-	        }).then(function(response){
-	        	console.log(response);
-	        	cadastroVm.salvando = false;
-	        	cadastroVm.salvo = true;
-	        	limparForm();
-	        });
+			if(cadastroVm.qtdLitros <= cadastroVm.automovel.capacidade_tanque){
+				cadastroVm.erroForm = false;
+				cadastroVm.salvo = false;
+				cadastroVm.salvando = true;
+				$http({
+		            method: 'POST',
+		            url: 'http://localhost:3000/api/abastecimentos/cadastro',
+		            params: { automovel: cadastroVm.automovel.id, tipoCombustivel: cadastroVm.tipoCombustivel, data: moment(cadastroVm.data, "DD/MM/YYYY").format("YYYY-MM-DD"), valorOdometro: cadastroVm.valorOdometro, qtdLitros: cadastroVm.qtdLitros, custoTotal: (cadastroVm.qtdLitros * cadastroVm.precoLitro), precoLitro: cadastroVm.precoLitro, novaSerie: cadastroVm.novaSerie }
+		        }).then(function(response){
+		        	console.log(response);
+		        	cadastroVm.salvando = false;
+		        	cadastroVm.salvo = true;
+		        	limparForm();
+		        });
+			}else{
+				cadastroVm.erroForm = true;
+				cadastroVm.mensagemErro = "A quantidade de litros abastecida não pode ser maior que a capacidade do tanque";
+			}
 		}else{
 			cadastroVm.erroForm = true;
+			cadastroVm.mensagemErro = "Existem problemas no formulário";
 		}
 	}
 

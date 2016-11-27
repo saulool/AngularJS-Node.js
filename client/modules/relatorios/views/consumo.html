@@ -1,0 +1,29 @@
+<h1>Relatório de Consumo</h1>
+
+<div ng-controller="RelatorioConsumoController as consumoCtrl">
+	<form>
+		<div class="form-group">
+			<label>Placa</label>
+			<input type="text" class="form-control" ng-model="consumoCtrl.filtro.placa" />
+		</div>
+	</form>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>	
+				<th>Placa</th>
+				<th>Eficiência média</th>
+				<th>Total distância</th>
+				<th>Total gastos</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="automovel in consumoCtrl.totaisPorPlaca | filter: consumoCtrl.filtro:strict">
+				<td>{{ automovel.placa }}</td>
+				<td>{{ automovel.kmPorLitro.toFixed(3) }}</td>
+				<td>{{ automovel.distancia }}</td>
+				<td>{{ automovel.totalValor }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
