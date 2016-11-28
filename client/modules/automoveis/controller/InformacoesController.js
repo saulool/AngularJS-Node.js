@@ -16,15 +16,22 @@ function InformacoesController($http){
     }).then(function(response){
     	informacoesVm.abastecimentos = response.data;
 
+    	console.log(response.data);
+
     	var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
-	    	return abastecimento.placa;
+	    	return {
+	    		id: abastecimento.id,
+	    		placa: abastecimento.placa
+	    	}
 	    });
 
-    	placas = _.uniq(placas);
+    	placas = _.uniq(placas, function(item, key, id) { 
+		    return item.id;
+		});
+
+    	console.log(placas);
 
     	informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
-
-    	console.log(informacoesVm.totaisPorPlaca);
     });
 
     function getTotaisPorPlaca(placas){
@@ -87,8 +94,8 @@ function InformacoesController($http){
 
 		var mediasPorPlaca = [];
 		_.each(placas, function(placa){
-		    mediasPorPlaca.push({placa: placa, medias: _.chain(abastecimentosComMedia).filter(function(abastecimento){
-		        return placa == abastecimento.placa;
+		    mediasPorPlaca.push({id: placa.id, placa: placa.placa, medias: _.chain(abastecimentosComMedia).filter(function(abastecimento){
+		        return placa.placa == abastecimento.placa;
 		    }).map(function(abastecimento){
 		        return {
 		        	distancia: abastecimento.distancia,
@@ -128,6 +135,7 @@ function InformacoesController($http){
             litrosPorKm = litrosPorKm / mediaPorPlaca.medias.length;
 		    
 		    return {
+		    	id: mediaPorPlaca.id,
 		        placa: mediaPorPlaca.placa,
 		        totalLitros: totalLitros,
 		        totalValor: totalValor,

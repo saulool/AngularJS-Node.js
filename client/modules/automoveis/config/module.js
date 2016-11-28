@@ -13,6 +13,13 @@ app.config(function($stateProvider) {
     templateUrl: '/modules/automoveis/views/cadastro.html'
   }
 
+  var automoveisEdicaoState = {
+    name: 'automoveisEditar',
+    url: '/automoveis/editar/:id',
+    templateUrl: '/modules/automoveis/views/editar.html'
+  }
+
   $stateProvider.state(automoveisInformacoesState);
   $stateProvider.state(automoveisCadastroState);
+  $stateProvider.state(automoveisEdicaoState);
 });

@@ -20,6 +20,8 @@
     "angular": "^1.5.9",
     "angular-ui-router": "^1.0.0",
     "moment": "^2.16.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "angular-mask": "3.0.16",
+    "angular-input-masks": "2.5.0"
   }
 }
