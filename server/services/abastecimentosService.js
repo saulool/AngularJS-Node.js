@@ -5,7 +5,9 @@ var request = require('request');
 module.exports = {
 	cadastrarAbastecimento : cadastrarAbastecimento,
 	getAbastecimentos : getAbastecimentos,
-  getUltimosAbastecimentos : getUltimosAbastecimentos
+  getUltimosAbastecimentos : getUltimosAbastecimentos,
+  getAbastecimentosPorMes : getAbastecimentosPorMes,
+  getAbastecimentosPorData : getAbastecimentosPorData
 }
 
 function cadastrarAbastecimento(req, res){
@@ -40,6 +42,32 @@ function getAbastecimentos(req, res){
 
 function getUltimosAbastecimentos(req, res){
   var query = 'SELECT at.id, at.placa, ab.data, ab.valor_odometro, ab.quantidade_litros, ab.custo_total, ab.preco_litro, ab.nova_serie FROM abastecimentos ab JOIN automoveis at on ab.id_automovel = at.id where ab.data between date_add(now(), INTERVAL -6 MONTH) and date(Now()) ORDER BY at.placa, ab.data;';
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) throw err;
+
+    console.log(rows);
+
+    res.send(JSON.stringify(rows));
+  });
+}
+
+function getAbastecimentosPorMes(req, res){
+  var query = 'SELECT MONTH(ab.data) as mes,YEAR(ab.data) as ano FROM abastecimentos ab JOIN automoveis at on ab.id_automovel = at.id GROUP BY YEAR(ab.data), MONTH(ab.data)';
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) throw err;
+
+    console.log(rows);
+
+    res.send(JSON.stringify(rows));
+  });
+}
+
+function getAbastecimentosPorData(req, res){
+  var query = 'select * from abastecimentos ab join automoveis at on ab.id_automovel = at.id where MONTH(data) = ' + req.query.mes + ' and YEAR(data) = ' + req.query.ano;
   console.log(query);
 
   connection.query(query, function(err, rows, fields) {

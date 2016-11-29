@@ -4,6 +4,7 @@ var abastecimentosService = require(global.__base + 'services/AbastecimentosServ
 
 module.exports = function(app){
   app.post('/api/abastecimentos/cadastro', function (req, res) {
+  	console.log('bateu route');
     abastecimentosService.cadastrarAbastecimento(req, res);
   });
 
@@ -13,5 +14,13 @@ module.exports = function(app){
 
   app.get('/api/abastecimentos/ultimos', function (req, res) {
     abastecimentosService.getUltimosAbastecimentos(req, res);
+  });
+
+  app.get('/api/abastecimentos/mes', function (req, res) {
+    abastecimentosService.getAbastecimentosPorMes(req, res);
+  });
+
+  app.get('/api/abastecimentos/pordata', function (req, res) {
+    abastecimentosService.getAbastecimentosPorData(req, res);
   });
 }
