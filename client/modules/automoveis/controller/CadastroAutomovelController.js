@@ -2,17 +2,12 @@ angular
 .module('app.automoveis')
 .controller('CadastroAutomovelController', CadastroAutomovelController);
 
-CadastroAutomovelController.$inject = ['$http'];
+CadastroAutomovelController.$inject = ['$http', 'AutomovelModel'];
 
-function CadastroAutomovelController($http){
+function CadastroAutomovelController($http, AutomovelModel){
 	var cadastroVm = this;
 
-	cadastroVm.placa = null;
-	cadastroVm.modelo = null;
-	cadastroVm.ano = null;
-	cadastroVm.fabricante = null;
-	cadastroVm.capacidade = null;
-	cadastroVm.odometro = null;
+	cadastroVm.automovel = new AutomovelModel();
 	cadastroVm.salvando = false;
 	cadastroVm.salvo = false;
 	cadastroVm.erroForm = false;
@@ -27,7 +22,7 @@ function CadastroAutomovelController($http){
 			$http({
 	            method: 'POST',
 	            url: 'http://localhost:3000/api/automoveis/cadastro',
-	            params: { placa: cadastroVm.placa, modelo: cadastroVm.modelo, ano: cadastroVm.ano, fabricante: cadastroVm.fabricante, capacidade: cadastroVm.capacidade, odometro: cadastroVm.odometro }
+	            params: { placa: cadastroVm.automovel.placa, modelo: cadastroVm.automovel.modelo, ano: cadastroVm.automovel.ano, fabricante: cadastroVm.automovel.fabricante, capacidade: cadastroVm.automovel.capacidade, odometro: cadastroVm.automovel.odometro }
 	        }).then(function(response){
 	        	console.log(response);
 	        	cadastroVm.salvando = false;
@@ -41,11 +36,11 @@ function CadastroAutomovelController($http){
 
 	function limparForm(){
 		cadastroVm.salvando = false;
-    	cadastroVm.placa = null;
-		cadastroVm.modelo = null;
-		cadastroVm.ano = null;
-		cadastroVm.fabricante = null;
-		cadastroVm.capacidade = null;
-		cadastroVm.odometro = null;
+    	cadastroVm.automovel.placa = null;
+		cadastroVm.automovel.modelo = null;
+		cadastroVm.automovel.ano = null;
+		cadastroVm.automovel.fabricante = null;
+		cadastroVm.automovel.capacidade = null;
+		cadastroVm.automovel.odometro = null;
 	}
 }

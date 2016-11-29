@@ -2,17 +2,12 @@ angular
 .module('app.automoveis')
 .controller('EditarAutomovelController', EditarAutomovelController);
 
-EditarAutomovelController.$inject = ['$http', '$stateParams'];
+EditarAutomovelController.$inject = ['$http', '$stateParams', 'AutomovelModel'];
 
-function EditarAutomovelController($http, $stateParams){
+function EditarAutomovelController($http, $stateParams, AutomovelModel){
 	var editarVm = this;
 
-	editarVm.placa = null;
-	editarVm.modelo = null;
-	editarVm.ano = null;
-	editarVm.fabricante = null;
-	editarVm.capacidade = null;
-	editarVm.odometro = null;
+	editarVm.automovel = new AutomovelModel();
 	editarVm.salvando = false;
 	editarVm.salvo = false;
 	editarVm.erroForm = false;
@@ -29,12 +24,12 @@ function EditarAutomovelController($http, $stateParams){
         }).then(function(response){
         	var automovel = response.data[0];
 
-        	editarVm.placa = automovel.placa;
-			editarVm.modelo = automovel.modelo;
-			editarVm.ano = automovel.ano;
-			editarVm.fabricante = automovel.fabricante;
-			editarVm.capacidade = automovel.capacidade_tanque;
-			editarVm.odometro = automovel.odometro;
+        	editarVm.automovel.placa = automovel.placa;
+			editarVm.automovel.modelo = automovel.modelo;
+			editarVm.automovel.ano = automovel.ano;
+			editarVm.automovel.fabricante = automovel.fabricante;
+			editarVm.automovel.capacidade = automovel.capacidade_tanque;
+			editarVm.automovel.odometro = automovel.odometro;
         });
 	}
 
@@ -46,7 +41,7 @@ function EditarAutomovelController($http, $stateParams){
 			$http({
 	            method: 'POST',
 	            url: 'http://localhost:3000/api/automoveis/editar',
-	            params: { id: $stateParams.id, placa: editarVm.placa, modelo: editarVm.modelo, ano: editarVm.ano, fabricante: editarVm.fabricante, capacidade: editarVm.capacidade, odometro: editarVm.odometro }
+	            params: { id: $stateParams.id, placa: editarVm.automovel.placa, modelo: editarVm.automovel.modelo, ano: editarVm.automovel.ano, fabricante: editarVm.automovel.fabricante, capacidade: editarVm.automovel.capacidade, odometro: editarVm.automovel.odometro }
 	        }).then(function(response){
 	        	console.log(response);
 	        	editarVm.salvando = false;

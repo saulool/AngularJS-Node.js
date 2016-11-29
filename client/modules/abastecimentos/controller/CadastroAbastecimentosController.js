@@ -2,37 +2,33 @@ angular
 .module('app.abastecimentos')
 .controller('CadastroAbastecimentoController', CadastroAbastecimentoController);
 
-CadastroAbastecimentoController.$inject = ['$http'];
+CadastroAbastecimentoController.$inject = ['$http', 'AbastecimentoModel'];
 
-function CadastroAbastecimentoController($http){
+function CadastroAbastecimentoController($http, AbastecimentoModel){
 	var cadastroVm = this;
 
-	cadastroVm.automoveis = ["Selecione"];
+	cadastroVm.abastecimento = new AbastecimentoModel();
 
-	cadastroVm.automovel = null;
-	cadastroVm.tipoCombustivel = 'gasolina';
-	cadastroVm.data = null;
-	cadastroVm.valorOdometro = null;
-	cadastroVm.qtdLitros = null;
-	cadastroVm.precoLitro = null;
-	cadastroVm.novaSerie = false;
 	cadastroVm.salvando = false;
 	cadastroVm.salvo = false;
 	cadastroVm.erroForm = false;
+
+	cadastroVm.automoveis = ["Selecione"];
 
 	cadastroVm.salvarAbastecimento = salvarAbastecimento;
 	getAutomoveis();
 
 	function salvarAbastecimento(){
+		console.log(cadastroVm.form);
 		if(cadastroVm.form.$valid){
-			if(cadastroVm.qtdLitros <= cadastroVm.automovel.capacidade_tanque){
+			if(cadastroVm.abastecimento.qtdLitros <= cadastroVm.abastecimento.automovel.capacidade_tanque){
 				cadastroVm.erroForm = false;
 				cadastroVm.salvo = false;
 				cadastroVm.salvando = true;
 				$http({
 		            method: 'POST',
 		            url: 'http://localhost:3000/api/abastecimentos/cadastro',
-		            params: { automovel: cadastroVm.automovel.id, tipoCombustivel: cadastroVm.tipoCombustivel, data: moment(cadastroVm.data, "DD/MM/YYYY").format("YYYY-MM-DD"), valorOdometro: cadastroVm.valorOdometro, qtdLitros: cadastroVm.qtdLitros, custoTotal: (cadastroVm.qtdLitros * cadastroVm.precoLitro), precoLitro: cadastroVm.precoLitro, novaSerie: cadastroVm.novaSerie }
+		            params: { automovel: cadastroVm.abastecimento.automovel.id, tipoCombustivel: cadastroVm.abastecimento.tipoCombustivel, data: moment(cadastroVm.abastecimento.data, "DD/MM/YYYY").format("YYYY-MM-DD"), valorOdometro: cadastroVm.abastecimento.valorOdometro, qtdLitros: cadastroVm.abastecimento.qtdLitros, custoTotal: (cadastroVm.abastecimento.qtdLitros * cadastroVm.abastecimento.precoLitro), precoLitro: cadastroVm.abastecimento.precoLitro, novaSerie: cadastroVm.abastecimento.novaSerie }
 		        }).then(function(response){
 		        	console.log(response);
 		        	cadastroVm.salvando = false;
@@ -57,17 +53,17 @@ function CadastroAbastecimentoController($http){
         }).then(function(response){
         	console.log(response);
         	cadastroVm.automoveis = response.data;
-        	cadastroVm.automovel = cadastroVm.automoveis[0];
+        	cadastroVm.abastecimento.automovel = cadastroVm.automoveis[0];
         });
 	}
 
 	function limparForm(){
-		cadastroVm.salvando = false;
-    	cadastroVm.placa = null;
-		cadastroVm.modelo = null;
-		cadastroVm.ano = null;
-		cadastroVm.fabricante = null;
-		cadastroVm.capacidade = null;
-		cadastroVm.odometro = null;
+		cadastroVm.abastecimento.salvando = false;
+    	cadastroVm.abastecimento.placa = null;
+		cadastroVm.abastecimento.modelo = null;
+		cadastroVm.abastecimento.ano = null;
+		cadastroVm.abastecimento.fabricante = null;
+		cadastroVm.abastecimento.capacidade = null;
+		cadastroVm.abastecimento.odometro = null;
 	}
 }

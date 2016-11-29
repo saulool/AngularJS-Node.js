@@ -5,7 +5,7 @@
 	  <div class="form-group">
 	    <label>Automóvel</label>
 
-		<select class="form-control" ng-model="cadastroAbastecimentoCtrl.automovel" ng-options="(automovel.placa + ' - ' + automovel.modelo) for automovel in cadastroAbastecimentoCtrl.automoveis track by automovel.id" ng-init="cadastroAbastecimentoCtrl.automovel = cadastroAbastecimentoCtrl.automoveis[0]">
+		<select class="form-control" ng-model="cadastroAbastecimentoCtrl.abastecimento.automovel" ng-options="(automovel.placa + ' - ' + automovel.modelo) for automovel in cadastroAbastecimentoCtrl.automoveis track by automovel.id" ng-init="cadastroAbastecimentoCtrl.abastecimento.automovel = cadastroAbastecimentoCtrl.automoveis[0]">
 				<option value="0" ng-if="cadastroAbastecimentoCtrl.automoveis.length == 0" selected>Selecione</option>
 			</select>
 	  </div>
@@ -13,7 +13,7 @@
 	  <div class="form-group">
 	    <label>Tipo de Combustível</label>
 
-		<select class="form-control" name="tipoCombustivel" ng-model="cadastroAbastecimentoCtrl.tipoCombustivel">
+		<select class="form-control" name="tipoCombustivel" ng-model="cadastroAbastecimentoCtrl.abastecimento.tipoCombustivel">
 			<option value="gasolina" selected>GASOLINA</option>
 			<option value="etanol">ETANOL</option>
 			<option value="diesel">DIESEL</option>
@@ -21,23 +21,23 @@
 	  </div>
 	  <div class="form-group">
 	    <label>Data</label>
-	    <input type="date" class="form-control" name="data" ng-model="cadastroAbastecimentoCtrl.data" required="required" placeholder="01/01/2011">
+	    <input type="date" class="form-control" name="data" ng-model="cadastroAbastecimentoCtrl.abastecimento.data" required="required" placeholder="01/01/2011">
 	  </div>
 	  <div class="form-group">
 	    <label>Valor Odômetro</label>
-	    <input type="text" class="form-control" name="valorOdometro" ng-model="cadastroAbastecimentoCtrl.valorOdometro" required="required" mask="999999" placeholder="21903">
+	    <input type="text" class="form-control" name="valorOdometro" ng-model="cadastroAbastecimentoCtrl.abastecimento.valorOdometro" required="required" mask="9?" repeat="6" placeholder="21903">
 	  </div>
 	  <div class="form-group">
 	    <label>Quantidade de Litros</label>
-	    <input type="text" class="form-control" name="qtdLitros" ui-number-mask ng-model="cadastroAbastecimentoCtrl.qtdLitros" required="required" placeholder="53.50">
+	    <input type="text" class="form-control" name="qtdLitros" ui-number-mask ng-model="cadastroAbastecimentoCtrl.abastecimento.qtdLitros" required="required" placeholder="53.50">
 	  </div>
 	  <div class="form-group">
 	    <label>Preço por Litro</label>
-	    <input type="text" class="form-control" name="precoLitro" ui-number-mask ng-model="cadastroAbastecimentoCtrl.precoLitro" required="required" placeholder="3.58">
+	    <input type="text" class="form-control" name="precoLitro" ui-number-mask ng-model="cadastroAbastecimentoCtrl.abastecimento.precoLitro" required="required" placeholder="3.58">
 	  </div>
 	  <div class="checkbox">
 	    <label>
-	      <input type="checkbox" name="novaSerie" ng-model="cadastroAbastecimentoCtrl.novaSerie"> Nova Série
+	      <input type="checkbox" name="novaSerie" ng-model="cadastroAbastecimentoCtrl.abastecimento.novaSerie"> Nova Série
 	    </label>
 	  </div>
 	  <button type="submit" class="btn btn-primary" ng-disabled="cadastroAbastecimentoCtrl.salvando">Salvar</button>
