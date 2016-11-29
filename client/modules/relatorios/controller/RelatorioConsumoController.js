@@ -10,22 +10,26 @@ function RelatorioConsumoController($http){
     informacoesVm.abastecimentos = [];
     informacoesVm.totaisPorPlaca = [];
 
-    $http({
-        method: 'GET',
-        url: 'http://localhost:3000/api/abastecimentos'
-    }).then(function(response){
-        informacoesVm.abastecimentos = response.data;
+    getConsumos();
 
-        var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
-            return abastecimento.placa;
+    function getConsumos(){
+        $http({
+            method: 'GET',
+            url: 'http://localhost:3000/api/abastecimentos'
+        }).then(function(response){
+            informacoesVm.abastecimentos = response.data;
+
+            var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
+                return abastecimento.placa;
+            });
+
+            placas = _.uniq(placas);
+
+            informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
+
+            console.log(informacoesVm.totaisPorPlaca);
         });
-
-        placas = _.uniq(placas);
-
-        informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
-
-        console.log(informacoesVm.totaisPorPlaca);
-    });
+    }
 
     function getTotaisPorPlaca(placas){
         var cont = 0;

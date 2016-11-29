@@ -9,6 +9,8 @@ global.connection = mysql.createConnection({
   port: 3306
 });
 
+global.__base = __dirname + '/';
+
 connection.connect();
 
 app.use(function(req, res, next) {

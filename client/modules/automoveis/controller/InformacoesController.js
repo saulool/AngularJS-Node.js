@@ -10,29 +10,29 @@ function InformacoesController($http){
 	informacoesVm.abastecimentos = [];
 	informacoesVm.totaisPorPlaca = [];
 
-	$http({
-        method: 'GET',
-        url: 'http://localhost:3000/api/abastecimentos/ultimos'
-    }).then(function(response){
-    	informacoesVm.abastecimentos = response.data;
+	getUltimosAbastecimentos();
 
-    	console.log(response.data);
+	function getUltimosAbastecimentos(){
+		$http({
+	        method: 'GET',
+	        url: 'http://localhost:3000/api/abastecimentos/ultimos'
+	    }).then(function(response){
+	    	informacoesVm.abastecimentos = response.data;
 
-    	var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
-	    	return {
-	    		id: abastecimento.id,
-	    		placa: abastecimento.placa
-	    	}
+	    	var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
+		    	return {
+		    		id: abastecimento.id,
+		    		placa: abastecimento.placa
+		    	}
+		    });
+
+	    	placas = _.uniq(placas, function(item, key, id) { 
+			    return item.id;
+			});
+
+	    	informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
 	    });
-
-    	placas = _.uniq(placas, function(item, key, id) { 
-		    return item.id;
-		});
-
-    	console.log(placas);
-
-    	informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
-    });
+	}
 
     function getTotaisPorPlaca(placas){
     	var cont = 0;
