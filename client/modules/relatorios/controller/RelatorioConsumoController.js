@@ -13,6 +13,7 @@ function RelatorioConsumoController($http){
     getConsumos();
 
     function getConsumos(){
+        informacoesVm.totaisPorPlaca = [];
         $http({
             method: 'GET',
             url: 'http://localhost:3000/api/abastecimentos'
@@ -24,8 +25,6 @@ function RelatorioConsumoController($http){
             });
 
             placas = _.uniq(placas);
-
-            //informacoesVm.totaisPorPlaca = getTotaisPorPlaca(informacoesVm.abastecimentos, placas);
 
             getMesesAbastecimento(placas);
         });
@@ -52,6 +51,10 @@ function RelatorioConsumoController($http){
                 }).then(function(response){
                     abastecimentos = response.data;
 
+                    console.log('chamou');
+
+                    console.log(placas);
+
                     //Para cada placa seleciona os abastecimentos
                     _.each(placas, function(placa){
                         var abastecimentosPlaca = _.filter(abastecimentos, function(abastecimento){
@@ -68,7 +71,7 @@ function RelatorioConsumoController($http){
                         
                     });
 
-                    abastecimentosPorMesPorPlaca2 = [];
+                    console.log(abastecimentosPorMesPorPlaca);
 
                     _.each(abastecimentosPorMesPorPlaca, function(abastecimentoPorMesPorPlaca){
                         var totalGasto = 0;
@@ -107,31 +110,86 @@ function RelatorioConsumoController($http){
                             }
                         }
 
-                        distancia = 0;
-                        totalLitros = 0;
-
+                        var abastecimentosComMedia = [];
                         _.each(x, function(veiculo){
-                            if(veiculo.abastecimentos.length > 0){
-                                distancia += veiculo.abastecimentos[veiculo.abastecimentos.length-1].valor_odometro - veiculo.abastecimentos[0].valor_odometro;
+                            var totalLitros = 0;
+                            var totalValor = 0;
 
-                                _.each(veiculo.abastecimentos, function(abastecimento, index){
-                                    if(index < veiculo.abastecimentos.length-1)
-                                        totalLitros += abastecimento.quantidade_litros;
-                                });
-                            }
+                            var distancia = veiculo.abastecimentos[veiculo.abastecimentos.length-1].valor_odometro - veiculo.abastecimentos[0].valor_odometro;
+
+                            _.each(veiculo.abastecimentos, function(abastecimento,index){
+                                
+                                //Se não deve contar o valor gasto no último abastecimento
+                                if(index < veiculo.abastecimentos.length-1){
+                                    totalValor += abastecimento.custo_total;
+                                    totalLitros += abastecimento.quantidade_litros;
+                                }
+                            });
                             
+                            abastecimentosComMedia.push({
+                                placa: veiculo.placa,
+                                distancia: distancia,
+                                totalLitros: totalLitros,
+                                totalValor: totalValor
+                            });
                         });
 
-                        abastecimentosPorMesPorPlaca2.push({
-                            mesAno: abastecimentoPorMesPorPlaca.mesAno,
-                            placa: abastecimentoPorMesPorPlaca.placa,
-                            totalGasto: totalGasto,
-                            distancia: distancia,
-                            totalLitros: totalLitros
+                        console.log(abastecimentosComMedia);
+
+                        var mediasPorPlaca = [];
+                        _.each(placas, function(placa){
+                            mediasPorPlaca.push({placa: placa, medias: _.chain(abastecimentosComMedia).filter(function(abastecimento){
+                                return placa == abastecimento.placa;
+                            }).map(function(abastecimento){
+                                return {
+                                    distancia: abastecimento.distancia,
+                                    totalLitros: abastecimento.totalLitros,
+                                    totalValor: abastecimento.totalValor,
+                                    kmPorLitro: abastecimento.distancia / abastecimento.totalLitros
+                                };
+                            }).value()});
+                        });
+
+                        console.log(mediasPorPlaca);
+
+                        var totaisPorPlaca = _.map(mediasPorPlaca, function(mediaPorPlaca){
+                            var totalValor = 0;
+                            var distancia = 0;
+                            var kmPorLitro = 0;
+                            
+                            _.each(mediaPorPlaca.medias, function(media){
+                                if(media.distancia > 0){
+                                    totalValor += media.totalValor;
+                                    distancia += media.distancia;
+                                    kmPorLitro += media.kmPorLitro
+                                }
+                            });
+
+                            kmPorLitro = kmPorLitro / mediaPorPlaca.medias.length;
+                            
+                            return {
+                                placa: mediaPorPlaca.placa,
+                                totalValor: totalGasto,
+                                distancia: distancia,
+                                kmPorLitro: kmPorLitro,
+                                mesAno: abastecimentoPorMesPorPlaca.mesAno
+                            }
+                        });
+
+                        var adicionar = _.filter(totaisPorPlaca, function(totalPorPlaca){
+                            return totalPorPlaca.placa == abastecimentoPorMesPorPlaca.placa;
+                        });
+
+                        console.log(adicionar);
+
+                        informacoesVm.totaisPorPlaca.push(adicionar[0]);
+
+                        console.log(informacoesVm.totaisPorPlaca);
+
+                        informacoesVm.totaisPorPlaca = _.uniq(informacoesVm.totaisPorPlaca, function(item, key, id) { 
+                            return item.mesAno + item.placa;
                         });
                     });
-
-                    informacoesVm.totaisPorPlaca = abastecimentosPorMesPorPlaca2;
                 });
             });
         });

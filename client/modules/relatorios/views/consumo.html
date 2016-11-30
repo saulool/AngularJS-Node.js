@@ -22,9 +22,9 @@
 			<tr ng-repeat="automovel in consumoCtrl.totaisPorPlaca | filter: consumoCtrl.filtro:strict">
 				<td>{{ automovel.mesAno }}</td>
 				<td>{{ automovel.placa }}</td>
-				<td>{{ (automovel.distancia / automovel.totalLitros) > 0 ? (automovel.distancia / automovel.totalLitros) : '-' }}</td>
+				<td>{{ automovel.kmPorLitro > 0 ? automovel.kmPorLitro : '-' }}</td>
 				<td>{{ automovel.distancia > 0 ? automovel.distancia : '-' }}</td>
-				<td>{{ automovel.totalGasto }}</td>
+				<td>{{ automovel.totalValor }}</td>
 			</tr>
 		</tbody>
 	</table>
