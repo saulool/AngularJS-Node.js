@@ -8,7 +8,7 @@ function CadastroAbastecimentoController($http, AbastecimentoModel){
 	var cadastroVm = this;
 
 	cadastroVm.abastecimento = new AbastecimentoModel();
-
+	cadastroVm.abastecimento.novaSerie = false;
 	cadastroVm.salvando = false;
 	cadastroVm.salvo = false;
 	cadastroVm.erroForm = false;
@@ -65,5 +65,6 @@ function CadastroAbastecimentoController($http, AbastecimentoModel){
 		cadastroVm.abastecimento.fabricante = null;
 		cadastroVm.abastecimento.capacidade = null;
 		cadastroVm.abastecimento.odometro = null;
+		cadastroVm.abastecimento.novaSerie = false;
 	}
 }

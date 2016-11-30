@@ -115,7 +115,8 @@ function RelatorioConsumoController($http){
                                 distancia += veiculo.abastecimentos[veiculo.abastecimentos.length-1].valor_odometro - veiculo.abastecimentos[0].valor_odometro;
 
                                 _.each(veiculo.abastecimentos, function(abastecimento, index){
-                                    totalLitros += abastecimento.quantidade_litros;
+                                    if(index < veiculo.abastecimentos.length-1)
+                                        totalLitros += abastecimento.quantidade_litros;
                                 });
                             }
                             
