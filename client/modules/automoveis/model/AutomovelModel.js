@@ -5,7 +5,7 @@ angular
 function AutomovelModel(){
 	var AutomovelModel = function() {
         this.placa = null;
-        this.modelo = 'gasolina';
+        this.modelo = null;
         this.ano = null;
         this.fabricante = null;
         this.capacidade = null;

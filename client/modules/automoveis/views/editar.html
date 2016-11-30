@@ -4,7 +4,7 @@
 	<form name="editarAutomovelCtrl.form" ng-submit="editarAutomovelCtrl.editarAutomovel()" novalidate>
 	  <div class="form-group">
 	    <label>Placa</label>
-	    <input type="text" class="form-control" min-length="8" name="placa" ng-model="editarAutomovelCtrl.automovel.placa" required="required" placeholder="XXX-0000">
+	    <input type="text" class="form-control" min-length="8" max-length="8" name="placa" ng-model="editarAutomovelCtrl.automovel.placa" required="required" mask="AAA-9999" placeholder="XXX-0000">
 	  </div>
 	  <div class="form-group">
 	    <label>Modelo</label>

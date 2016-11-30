@@ -7,31 +7,55 @@ InformacoesController.$inject = ['$http'];
 function InformacoesController($http){
 	var informacoesVm = this;
 
+	informacoesVm.automoveis = [];
 	informacoesVm.abastecimentos = [];
 	informacoesVm.totaisPorPlaca = [];
 
+	getAutomoveis();
 	getUltimosAbastecimentos();
 
+	function getAutomoveis(){
+		
+	}
+
 	function getUltimosAbastecimentos(){
-		$http({
-	        method: 'GET',
-	        url: 'http://localhost:3000/api/abastecimentos/ultimos'
-	    }).then(function(response){
-	    	informacoesVm.abastecimentos = response.data;
+		$http(
+        {
+            method: 'GET',
+            url: 'http://localhost:3000/api/automoveis'
+        }).then(function(response){
+        	informacoesVm.automoveis = _.map(response.data, function(automovel){
+        		return {
+        			id: automovel.id,
+        			placa: automovel.placa
+        		}
+        	});
 
-	    	var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
-		    	return {
-		    		id: abastecimento.id,
-		    		placa: abastecimento.placa
-		    	}
+			$http({
+		        method: 'GET',
+		        url: 'http://localhost:3000/api/abastecimentos/ultimos'
+		    }).then(function(response){
+		    	informacoesVm.abastecimentos = response.data;
+
+		    	var placas = _.map(informacoesVm.abastecimentos, function(abastecimento){
+			    	return {
+			    		id: abastecimento.id,
+			    		placa: abastecimento.placa
+			    	}
+			    });
+
+		    	placas = _.uniq(placas, function(item, key, id) { 
+				    return item.id;
+				});
+
+		    	informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
+
+		    	//informacoesVm.automoveis = _.filter(informacoesVm.automoveis, function(obj){ return !_.findWhere(informacoesVm.totaisPorPlaca, obj); });
+
+		    	var diff = _.difference(_.pluck(informacoesVm.automoveis, "placa"), _.pluck(informacoesVm.totaisPorPlaca, "placa"));
+				informacoesVm.automoveis = _.filter(informacoesVm.automoveis, function(obj) { return diff.indexOf(obj.placa) >= 0; });
 		    });
-
-	    	placas = _.uniq(placas, function(item, key, id) { 
-			    return item.id;
-			});
-
-	    	informacoesVm.totaisPorPlaca = getTotaisPorPlaca(placas);
-	    });
+        });
 	}
 
     function getTotaisPorPlaca(placas){

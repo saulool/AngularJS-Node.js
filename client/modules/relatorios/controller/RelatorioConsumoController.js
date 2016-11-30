@@ -87,7 +87,7 @@ function RelatorioConsumoController($http){
                             //Se é uma nova série e não é o último abastecimento
                             if(abastecimentoPorMesPorPlaca.abastecimentos[i].nova_serie == 1 && i != abastecimentoPorMesPorPlaca.abastecimentos.length - 1){
                                 var posInicioAux = posInicio;
-                                posInicio = i;      
+                                posInicio = i;
                                 if(cont != 0){
                                     x.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicioAux].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicioAux, i)});
                                 }
@@ -109,6 +109,8 @@ function RelatorioConsumoController($http){
                                 cont++;
                             }
                         }
+
+                        console.log(x);
 
                         var abastecimentosComMedia = [];
                         _.each(x, function(veiculo){

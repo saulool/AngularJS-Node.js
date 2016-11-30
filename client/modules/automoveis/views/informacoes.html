@@ -15,6 +15,11 @@
 				<td>{{ automovel.litrosPorKm > 0 ? automovel.litrosPorKm.toFixed(3) : '-' }}</td>
 				<td>{{ automovel.custoPorKm > 0 ? automovel.custoPorKm.toFixed(3) : '-' }}</td>
 			</tr>
+			<tr ng-repeat="automovel in informacoesCtrl.automoveis">
+				<td><a ui-sref="automoveisEditar({id: {{automovel.id}}})">{{ automovel.placa }}</a></td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
