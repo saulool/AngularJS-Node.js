@@ -18,4 +18,8 @@ module.exports = function(app){
   app.get('/api/automoveis/automovel', function (req, res) {
     automoveisService.getAutomovel(req, res);
   });
+
+  app.get('/api/automoveis/automovel/porplaca', function (req, res) {
+    automoveisService.getAutomovelPorPlaca(req, res);
+  });
 }

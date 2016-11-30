@@ -38,17 +38,34 @@ function EditarAutomovelController($http, $stateParams, AutomovelModel){
 			editarVm.erroForm = false;
 			editarVm.salvo = false;
 			editarVm.salvando = true;
+
+
 			$http({
-	            method: 'POST',
-	            url: 'http://localhost:3000/api/automoveis/editar',
-	            params: { id: $stateParams.id, placa: editarVm.automovel.placa, modelo: editarVm.automovel.modelo, ano: editarVm.automovel.ano, fabricante: editarVm.automovel.fabricante, capacidade: editarVm.automovel.capacidade, odometro: editarVm.automovel.odometro }
+	            method: 'GET',
+	            url: 'http://localhost:3000/api/automoveis/automovel/porplaca',
+	            params: { placa: editarVm.automovel.placa }
 	        }).then(function(response){
 	        	console.log(response);
-	        	editarVm.salvando = false;
-	        	editarVm.salvo = true;
+	        	if(response.data.length && response.data[0].id != $stateParams.id){
+	        		editarVm.erroForm = true;
+	        		editarVm.salvando = false;
+	        	}else{
+	        		$http({
+			            method: 'POST',
+			            url: 'http://localhost:3000/api/automoveis/editar',
+			            params: { id: $stateParams.id, placa: editarVm.automovel.placa, modelo: editarVm.automovel.modelo, ano: editarVm.automovel.ano, fabricante: editarVm.automovel.fabricante, capacidade: editarVm.automovel.capacidade, odometro: editarVm.automovel.odometro }
+			        }).then(function(response){
+			        	console.log(response);
+			        	editarVm.salvando = false;
+			        	editarVm.salvo = true;
+			        });
+	        	}
 	        });
+
+			
 		}else{
 			editarVm.erroForm = true;
+			editarVm.salvando = false;
 		}
 	}
 }

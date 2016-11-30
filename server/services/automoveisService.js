@@ -4,7 +4,8 @@ module.exports = {
 	cadastrarAutomovel : cadastrarAutomovel,
 	editarAutomovel : editarAutomovel,
   getAutomovel : getAutomovel,
-  getAutomoveis : getAutomoveis
+  getAutomoveis : getAutomoveis,
+  getAutomovelPorPlaca : getAutomovelPorPlaca
 }
 
 function cadastrarAutomovel(req, res){
@@ -31,6 +32,17 @@ function editarAutomovel(req, res){
 
 function getAutomovel(req, res){
   var query = 'SELECT * FROM automoveis WHERE id = ' + req.query.id;
+  console.log(query);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) throw err;
+
+    res.send(JSON.stringify(rows));
+  });
+}
+
+function getAutomovelPorPlaca(req, res){
+  var query = 'SELECT * FROM automoveis WHERE placa = "' + req.query.placa + '"';
   console.log(query);
 
   connection.query(query, function(err, rows, fields) {

@@ -19,18 +19,33 @@ function CadastroAutomovelController($http, AutomovelModel){
 			cadastroVm.erroForm = false;
 			cadastroVm.salvo = false;
 			cadastroVm.salvando = true;
+
+
 			$http({
-	            method: 'POST',
-	            url: 'http://localhost:3000/api/automoveis/cadastro',
-	            params: { placa: cadastroVm.automovel.placa, modelo: cadastroVm.automovel.modelo, ano: cadastroVm.automovel.ano, fabricante: cadastroVm.automovel.fabricante, capacidade: cadastroVm.automovel.capacidade, odometro: cadastroVm.automovel.odometro }
+	            method: 'GET',
+	            url: 'http://localhost:3000/api/automoveis/automovel/porplaca',
+	            params: { placa: cadastroVm.automovel.placa }
 	        }).then(function(response){
-	        	console.log(response);
-	        	cadastroVm.salvando = false;
-	        	cadastroVm.salvo = true;
-	        	limparForm();
+	        	if(response.data.length){
+	        		cadastroVm.erroForm = true;
+	        		cadastroVm.salvando = false;
+	        	}else{
+	        		$http({
+			            method: 'POST',
+			            url: 'http://localhost:3000/api/automoveis/cadastro',
+			            params: { placa: cadastroVm.automovel.placa, modelo: cadastroVm.automovel.modelo, ano: cadastroVm.automovel.ano, fabricante: cadastroVm.automovel.fabricante, capacidade: cadastroVm.automovel.capacidade, odometro: cadastroVm.automovel.odometro }
+			        }).then(function(response){
+			        	console.log(response);
+			        	cadastroVm.salvando = false;
+			        	cadastroVm.salvo = true;
+			        	limparForm();
+			        });
+	        	}
+
 	        });
 		}else{
 			cadastroVm.erroForm = true;
+			cadastroVm.salvando = false;
 		}
 	}
 

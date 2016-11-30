@@ -51,10 +51,6 @@ function RelatorioConsumoController($http){
                 }).then(function(response){
                     abastecimentos = response.data;
 
-                    console.log('chamou');
-
-                    console.log(placas);
-
                     //Para cada placa seleciona os abastecimentos
                     _.each(placas, function(placa){
                         var abastecimentosPlaca = _.filter(abastecimentos, function(abastecimento){
@@ -73,35 +69,43 @@ function RelatorioConsumoController($http){
 
                     console.log(abastecimentosPorMesPorPlaca);
 
+
+                    //Para cada abastecimento de determinada placa
                     _.each(abastecimentosPorMesPorPlaca, function(abastecimentoPorMesPorPlaca){
                         var totalGasto = 0;
 
+                        //Calcula o total gasto com os abastecimentos
                         _.each(abastecimentoPorMesPorPlaca.abastecimentos, function(abastecimento){
                             totalGasto += abastecimento.custo_total;
                         });
 
+                        console.log(abastecimentoPorMesPorPlaca);
+
+
+                        //Realiza as separações de séries
                         var cont = 0;
                         var posInicio = 0;
-                        var x = [];
+                        var series = [];
                         for(var i=0; i<abastecimentoPorMesPorPlaca.abastecimentos.length; i++){
                             //Se é uma nova série e não é o último abastecimento
                             if(abastecimentoPorMesPorPlaca.abastecimentos[i].nova_serie == 1 && i != abastecimentoPorMesPorPlaca.abastecimentos.length - 1){
                                 var posInicioAux = posInicio;
                                 posInicio = i;
                                 if(cont != 0){
-                                    x.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicioAux].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicioAux, i)});
+                                    series.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicioAux].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicioAux, i)});
                                 }
                                 //Se é o último abastecimento
                             }else if(i == abastecimentoPorMesPorPlaca.abastecimentos.length - 1){
                                 //Se o último não é uma nova série
                                 if(abastecimentoPorMesPorPlaca.abastecimentos[i].nova_serie == 0){
-                                    x.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicio].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicio, i+1)});
+                                    series.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicio].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicio, i+1)});
                                 //Se o último é uma nova série, adiciona a série anterior e mais o último elemento
                                 }else{
                                     var posInicioAux = posInicio;
                                     posInicio = i;
                                     
-                                    x.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicioAux].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicioAux, i)});
+                                    if(posInicioAux != posInicio)
+                                        series.push({ placa: abastecimentoPorMesPorPlaca.abastecimentos[posInicioAux].placa, abastecimentos: abastecimentoPorMesPorPlaca.abastecimentos.slice(posInicioAux, i)});
                                     //x.push({ placa: informacoesVm.abastecimentos[i].placa, abastecimentos: [informacoesVm.abastecimentos[i]]});
                                 }
                                 //Se não é uma nova série e não é o último abastecimento
@@ -110,15 +114,20 @@ function RelatorioConsumoController($http){
                             }
                         }
 
-                        console.log(x);
+                        console.log(series);
 
+
+                        //Para cada série
                         var abastecimentosComMedia = [];
-                        _.each(x, function(veiculo){
+                        _.each(series, function(veiculo){
                             var totalLitros = 0;
                             var totalValor = 0;
 
+                            //Calcula a distancia
                             var distancia = veiculo.abastecimentos[veiculo.abastecimentos.length-1].valor_odometro - veiculo.abastecimentos[0].valor_odometro;
 
+
+                            //Para cada abastecimento da série
                             _.each(veiculo.abastecimentos, function(abastecimento,index){
                                 
                                 //Se não deve contar o valor gasto no último abastecimento
@@ -128,6 +137,7 @@ function RelatorioConsumoController($http){
                                 }
                             });
                             
+                            //Adiciona os totais daquela série no abastecimentosComMedia
                             abastecimentosComMedia.push({
                                 placa: veiculo.placa,
                                 distancia: distancia,
@@ -138,6 +148,7 @@ function RelatorioConsumoController($http){
 
                         console.log(abastecimentosComMedia);
 
+                        //Realiza as médias mapeando um novo objeto
                         var mediasPorPlaca = [];
                         _.each(placas, function(placa){
                             mediasPorPlaca.push({placa: placa, medias: _.chain(abastecimentosComMedia).filter(function(abastecimento){
@@ -154,6 +165,7 @@ function RelatorioConsumoController($http){
 
                         console.log(mediasPorPlaca);
 
+                        //Realiza a média das médias
                         var totaisPorPlaca = _.map(mediasPorPlaca, function(mediaPorPlaca){
                             var totalValor = 0;
                             var distancia = 0;
